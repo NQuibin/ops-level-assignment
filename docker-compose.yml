@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+  mongodb:
+    container_name: mongodb_dev
+    image: mongo:4.4.1
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: opslevel
+      MONGO_INITDB_ROOT_PASSWORD: opslevel123123
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./local/db:/data/db

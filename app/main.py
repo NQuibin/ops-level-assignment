@@ -1,6 +1,7 @@
-from typing import Optional
+from typing import Optional, Callable, Any, Tuple, Dict
 
-from fastapi import FastAPI, Response, status
+from fastapi import FastAPI, Response, status, HTTPException
+from fastapi.responses import JSONResponse
 
 from .manager import TasksManager
 from .models import CreateUpdateTaskPayload
@@ -9,7 +10,14 @@ app = FastAPI()
 manager = TasksManager()
 
 
-@app.get('/v1/items')
+@app.exception_handler(Exception)
+async def validation_exception_handler(_, exc):
+    status_code = getattr(exc, 'status_code', 500)
+    message = getattr(exc, 'message', 'Something went wrong')
+    return JSONResponse(status_code=status_code, content={'message': message})
+
+
+@app.get('/v1/tasks')
 def get_tasks(is_active: Optional[bool] = None):
     return manager.get_all_tasks(is_active)
 

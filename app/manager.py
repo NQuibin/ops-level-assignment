@@ -2,6 +2,7 @@ from typing import List, Optional
 
 from .repository import TasksRepository
 from .models import Task, CreateUpdateTaskPayload
+from .exceptions import HttpException
 
 
 class TasksManager:
@@ -10,7 +11,7 @@ class TasksManager:
 
     def _to_model(self, task: dict) -> Task:
         return Task(
-            id=str(task.get('_id')),
+            id=str(task.get('id')),
             description=task.get('description'),
             priority=task.get('priority'),
             is_active=task.get('is_active')
@@ -18,6 +19,9 @@ class TasksManager:
 
     def get_task(self, task_id: str) -> Task:
         task = self.repository.find_one(task_id)
+        if task is None:
+            raise HttpException(status_code=404, message='Task not found')
+
         return self._to_model(task)
 
     def get_all_tasks(self, is_active: Optional[bool] = None) -> List[Task]:

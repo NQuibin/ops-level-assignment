@@ -3,7 +3,7 @@ from bson.objectid import ObjectId
 
 from pymongo import MongoClient
 
-client = MongoClient('mongodb://opslevel:opslevel123123@localhost:27017/tasks?authSource=admin')
+client = MongoClient(f'mongodb://opslevel:opslevel123123@localhost:27017/opsLevel?authSource=admin')
 
 db = client.opsLevel
 tasks = db.tasks
@@ -20,10 +20,12 @@ class TasksRepository:
         tasks.insert_one(payload)
         return payload
 
-    def replace_one(self, task_id: str, payload: dict) -> dict:
-        tasks.replace_one({'_id': ObjectId(task_id)}, payload)
-        payload['_id'] = ObjectId(task_id)
-        return payload
+    def replace_one(self, task_id: str, payload: dict) -> Optional[dict]:
+        result = tasks.replace_one({'_id': ObjectId(task_id)}, payload)
+        if result.modified_count == 1:
+            payload['_id'] = ObjectId(task_id)
+            return payload
+        return None
 
     def delete_one(self, task_id: str) -> bool:
         result = tasks.delete_one({'_id': ObjectId(task_id)})

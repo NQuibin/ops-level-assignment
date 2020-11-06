@@ -11,7 +11,7 @@ class TasksManager:
 
     def _to_model(self, task: dict) -> Task:
         return Task(
-            id=str(task.get('id')),
+            id=str(task.get('_id')),
             description=task.get('description'),
             priority=task.get('priority'),
             is_active=task.get('is_active')
@@ -34,6 +34,8 @@ class TasksManager:
 
     def update_task(self, task_id: str, payload: CreateUpdateTaskPayload) -> Task:
         task = self.repository.replace_one(task_id, payload.dict())
+        if task is None:
+            raise HttpException(status_code=404, message='Task not found')
         return self._to_model(task)
 
     def delete_task(self, task_id: str) -> bool:

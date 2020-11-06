@@ -1,14 +1,14 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, PositiveInt
 
 
 class Task(BaseModel):
     id: str
     description: str
-    priority: int
+    priority: PositiveInt
     is_active: bool
 
 
 class CreateUpdateTaskPayload(BaseModel):
     description: str
-    priority: int
+    priority: PositiveInt
     is_active: bool

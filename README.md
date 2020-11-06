@@ -1,5 +1,7 @@
 # ops-level-assignment
 Ops Level Take Home Assignment
+* Nikki Quibin
+* nikki.quibin@gmail.com
 
 ## Setup
 ### Requirements

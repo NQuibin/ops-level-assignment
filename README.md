@@ -45,3 +45,5 @@ Ops Level Take Home Assignment
 ### Notes
 * API is created with the [FastAPI](https://fastapi.tiangolo.com/)
 framework.
+* There's a file called `api-collection.json` (exported from Insomnia) which can be imported
+to your API Client.
